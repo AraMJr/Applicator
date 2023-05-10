@@ -3,6 +3,9 @@
     "name": "Applicator",
     "version": "1.0.0",
 
+    "description": "Applicator is a Firefox extension that allows you to fill out forms with a single click.",
+    "homepage_url": "https://github.com/AraMJr/Applicator",
+
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
@@ -19,7 +22,6 @@
 
     "permissions": [
         "activeTab",
-        "tabs",
         "storage",
         "http://*/*",
         "https://*/*"

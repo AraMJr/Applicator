@@ -6,15 +6,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Applicator</title>
         <link rel="stylesheet" type="text/css" href="../css/window.css">
-        <script src="../javascript/autofill.js"></script>
     </head>
     <body>
-        <button onclick="applicate()">Applicate</button>
-        <label for="firstName">First Name</label>
-        <input type="text" id="firstName" name="firstName">
-        <label for="phone">Phone</label>
-        <input type="text" id="phone" name="phone">
+        <div class="container">
+            <div class="center">
+                <button id="applicate">Applicate</button>
+            </div>
+        </div>
+        <label for="first-name">First Name</label>
+        <input type="text" id="first-name" name="first-name">
+        <label for="phone-number">Phone</label>
+        <input type="text" id="phone-number" name="phone-number">
         <label for="email">Email</label>
         <input type="text" id="email" name="email">
+        <div id="error-content" class="hidden">
+            <p>Can't applicate this web page.</p>
+            <p>Try a different page.</p>
+        </div>
+        <script src="../javascript/autofill.js"></script>
     </body>
 </html>

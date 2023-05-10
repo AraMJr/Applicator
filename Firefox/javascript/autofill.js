@@ -1,18 +1,33 @@
+console.log("Applicator extension loaded");
 
-function applicate() {
-    console.log('applicating');
-    const firstName = document.getElementById('firstName').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
+// Define the interface
+const applicate = document.getElementById("applicate");
+const firstNameInput = document.getElementById("first-name");
+const phoneNumberInput = document.getElementById("phone-number");
+const emailInput = document.getElementById("email");
 
-    const fieldsToFill = {
-        'firstName': firstName,
-        'phone': phone,
-        'email': email
-    };
+// Load user data
+browser.storage.local.get(["first-name", "phone-number", "email"]).then((result) => {
+  firstNameInput.value = result.firstName || "";
+  phoneNumberInput.value = result.phoneNumber || "";
+  emailInput.value = result.email || "";
+});
 
-    console.log(fieldsToFill);
-    browser.tabs.query({active: true, currentWindow: true}).then(async function(tabs) {
-        browser.tabs.sendMessage(tabs[0].id, {action: "fillFormFields", fields: fieldsToFill});
-    }).catch(console.error);
-}
+// Store user data on form submission
+const form = document.querySelector("form");
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const firstName = firstNameInput.value;
+  const phoneNumber = phoneNumberInput.value;
+  const email = emailInput.value;
+  browser.storage.local.set({ firstName, phoneNumber, email });
+});
+
+// Auto-populate form fields
+applicate.addEventListener("click", () => {
+    browser.tabs.executeScript({ file: "content-script.js" }).then(() => {
+      console.log("Form auto-populated");
+    }).catch((error) => {
+      console.error(error);
+    });
+});
