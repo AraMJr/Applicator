@@ -57,8 +57,9 @@ button {
     background-color: var(--off-background);
 }
 
-button:hover, button:focus {
+button:hover, button:focus, button:active {
     transition: 0.25s;
+    outline-color: var(--highlight-background);
     color: var(--highlight-text);
     background-color: var(--highlight-background);
 }
@@ -76,7 +77,13 @@ button:hover, button:focus {
     transform: translate(-50%, -50%);
 }
 
+.spacer {
+    height: 20px;
+    width: auto;
+}
+
 #applicate {
+    outline-color: var(--highlight-background);
     transition: 0.25s;
     height: 80px;
     line-height: 80px;
@@ -94,7 +101,20 @@ button:hover, button:focus {
     background-color: var(--glow);
 }
 
-#applicate:active {
-    transition: 0.1s;
-    transform: scale(1.1);
+#clear {
+    outline-color: var(--highlight-background);
+    transition: 0.25s;
+    font-weight: bold;
+    padding: 0.5em;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    color: var(--off-text);
+    background-color: var(--off-background);
+}
+
+#clear:hover {
+    transition: 0.25s;
+    color: var(--highlight-text);
+    background-color: var(--glow);
 }
