@@ -114,9 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var value = event.target.value;
             var fieldType = formFields.find((field) => field.id === event.target.id)?.type;
             // Store the last entered value in storage
-            console.log("validating ", field, value, fieldType)
             if (validateField(fieldType, value) || value === null || value === "") {
-                console.log(field, value, fieldType, "is valid")
                 var data = {};
                 data[field] = value;
                 browser.storage.local.set(data);
