@@ -25,6 +25,10 @@ body {
 }
 
 input {
+    transition: 0.25s;
+    padding: 0.25em;
+    text-align: center;
+    justify-content: center;
     border: none;
     border-radius: 4px;
     color: var(--text);
@@ -33,6 +37,7 @@ input {
 
 input:hover, input:focus, input:active {
     outline: none;
+    justify-content: center;
     color: var(--highlight-text);
     background-color: var(--highlight-background);
 }
@@ -78,7 +83,7 @@ button:hover, button:focus, button:active {
 }
 
 .spacer {
-    height: 20px;
+    height: 25px;
     width: auto;
 }
 
@@ -117,4 +122,12 @@ button:hover, button:focus, button:active {
     transition: 0.25s;
     color: var(--highlight-text);
     background-color: var(--glow);
+}
+
+#form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
 }
