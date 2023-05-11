@@ -1,12 +1,12 @@
 
 :root {
     --text: #d4d4d4;
-    --background: #4b4949;
+    --background: #363535;
     --off-text: #eeeeee;
-    --off-background: #666666;
-    --border-color: #2e2e2e;
+    --off-background: #535353;
+    --glow: #4eb4db;
     --highlight-text: #2e2e2e;
-    --highlight-background: #a5a5a5;
+    --highlight-background: #8a8a8a;
 }
 
 body {
@@ -15,15 +15,26 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
+::-moz-selection { /* Code for Firefox */
+    color: var(--highlight-text);
+    background: var(--glow);
+  }
+
 .hidden {
     display: none;
 }
 
 input {
-    border: 2px solid var(--border-color);
+    border: none;
     border-radius: 4px;
     color: var(--text);
     background-color: var(--off-background);
+}
+
+input:hover, input:focus, input:active {
+    outline: none;
+    color: var(--highlight-text);
+    background-color: var(--highlight-background);
 }
 
 label {
@@ -32,11 +43,12 @@ label {
     display: inline-block;
     width: auto;
     text-align: left;
-    font-weight: bold;
+    font-weight: bolder;
     color: var(--text);
 }
 
 button {
+    transition: 0.25s;
     border: none;
     padding: none;
     text-align: center;
@@ -45,7 +57,8 @@ button {
     background-color: var(--off-background);
 }
 
-button:hover {
+button:hover, button:focus {
+    transition: 0.25s;
     color: var(--highlight-text);
     background-color: var(--highlight-background);
 }
@@ -76,12 +89,12 @@ button:hover {
 
 #applicate:hover {
     transition: 0.25s;
-    transform: scale(1.2);
+    transform: scale(1.1);
     color: var(--highlight-text);
-    background-color: var(--highlight-background);
+    background-color: var(--glow);
 }
 
-#applicate:active{
+#applicate:active {
     transition: 0.1s;
     transform: scale(1.1);
 }
