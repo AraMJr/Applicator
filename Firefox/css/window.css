@@ -15,23 +15,14 @@ body {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-::-moz-selection { /* Code for Firefox */
+::-moz-selection {
     color: var(--highlight-text);
     background: var(--glow);
-  }
+}
 
-
-input {
-    transition: 0.25s;
-    padding: 0.25em;
-    text-align: center;
-    justify-content: center;
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparent;
-    border-radius: 4px;
-    color: var(--text);
-    background-color: var(--off-background);
+::-moz-placeholder {
+    font-style: italic;
+    cursor: text;
 }
 
 input:hover, input:focus, input:active {
@@ -39,6 +30,18 @@ input:hover, input:focus, input:active {
     justify-content: center;
     color: var(--highlight-text);
     background-color: var(--highlight-background);
+}
+
+input {
+    transition: 0.25s;
+    padding: 0.25em;
+    text-align: center;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 4px;
+    color: var(--text);
+    background-color: var(--off-background);
 }
 
 label {
@@ -49,6 +52,13 @@ label {
     text-align: left;
     font-weight: bolder;
     color: var(--text);
+}
+
+button:hover, button:focus, button:active {
+    transition: 0.25s;
+    outline-color: var(--highlight-background);
+    color: var(--highlight-text);
+    background-color: var(--highlight-background);
 }
 
 button {
@@ -63,11 +73,9 @@ button {
     background-color: var(--off-background);
 }
 
-button:hover, button:focus, button:active {
-    transition: 0.25s;
-    outline-color: var(--highlight-background);
-    color: var(--highlight-text);
-    background-color: var(--highlight-background);
+::webkit-calendar-picker-indicator {
+    font-style: italic !important;
+    display: none !important;
 }
 
 .buttonContainer {
@@ -88,6 +96,18 @@ button:hover, button:focus, button:active {
     width: auto;
 }
 
+/* #date-of-birth {
+    font-style: italic;
+    width: 112%;
+} */
+
+#applicate:hover {
+    transition: 0.25s;
+    transform: scale(1.1);
+    color: var(--highlight-text);
+    background-color: var(--glow);
+}
+
 #applicate {
     outline-color: var(--highlight-background);
     transition: 0.25s;
@@ -100,9 +120,8 @@ button:hover, button:focus, button:active {
     background-color: var(--off-background);
 }
 
-#applicate:hover {
+#clear:hover {
     transition: 0.25s;
-    transform: scale(1.1);
     color: var(--highlight-text);
     background-color: var(--glow);
 }
@@ -119,12 +138,6 @@ button:hover, button:focus, button:active {
     background-color: var(--off-background);
 }
 
-#clear:hover {
-    transition: 0.25s;
-    color: var(--highlight-text);
-    background-color: var(--glow);
-}
-
 #form-container {
     display: flex;
     flex-direction: column;
@@ -133,18 +146,18 @@ button:hover, button:focus, button:active {
     width: auto;
 }
 
-.invalid {
-    border-width: 1px !important;
-    border-style: solid;
-    border-color: red;
-}
-
-.invalidButton, .invalidButton:hover, .invalidButton:active, .invalidButton:focus{
+.invalidButton, .invalidButton:hover, .invalidButton:active, .invalidButton:focus {
     opacity: 0.5 !important;
     cursor: not-allowed !important;
     transform: none !important;
     color: var(--off-text) !important;
     background-color: var(--off-background) !important;
+}
+
+.invalid {
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-color: red !important;
 }
 
 .hidden {

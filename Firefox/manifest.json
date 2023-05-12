@@ -9,7 +9,8 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["javascript/applicator.js"]
+            "js": ["javascript/applicator.js"],
+            "css":["css/window.css"]
         }
     ],
 
@@ -22,6 +23,7 @@
 
     "permissions": [
         "activeTab",
+        "tabs",
         "storage",
         "http://*/*",
         "https://*/*"

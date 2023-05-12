@@ -2,15 +2,18 @@
 const formContainer = document.getElementById("form-container");
 
 const formFields = [
-    { label: "First Name", id: "first-name", type: "text", placeholder: "First Name", formatted: false, abbrev: false},
-    { label: "Last Name", id: "last-name", type: "text", placeholder: "Last Name", formatted: false, abbrev: false},
-    { label: "Email", id: "email", type: "email", placeholder: "text@website.ext", formatted: false, abbrev: false},
-    { label: "Phone Number", id: "phone-number", type: "tel", placeholder: "xxx-xxx-xxxx", formatted: true, abbrev: false},
-    { label: "Address", id: "address", type: "text", placeholder: "Street Address", formatted: false, abbrev: false},
-    { label: "City", id: "city", type: "text", placeholder: "City", formatted: false, abbrev: false},
-    { label: "State", id: "state", type: "state", placeholder: "State", formatted: false, abbrev: true},
-    { label: "Zip Code", id: "zip-code", type: "zip", placeholder: "xxxxx-xxxx", formatted: true, abbrev: false},
-    { label: "Country", id: "country", type: "country", placeholder: "Country", formatted: false, abbrev: false},
+    { label: "Full Name", id: "full-name", fieldType: "name", placeholder: "Full Name", hidden: false},
+    { label: "First Name", id: "first-name", fieldType: "text", placeholder: "First Name", hidden: true},
+    { label: "Last Name", id: "last-name", fieldType: "text", placeholder: "Last Name", hidden: true},
+    { label: "Email", id: "email", fieldType: "email", placeholder: "text@website.ext", hidden: false},
+    { label: "Phone Number", id: "phone-number", fieldType: "tel", placeholder: "xxx-xxx-xxxx", hidden: false},
+    { label: "Date of Birth", id: "date-of-birth", fieldType: "dob", placeholder: "mm/dd/yyyy", hidden: false},
+    { label: "Mailing Address", id: "mailing-address", fieldType: "add", placeholder: "Mailing Address", hidden: true},
+    { label: "Address", id: "address", fieldType: "text", placeholder: "Street Address", hidden: false},
+    { label: "City", id: "city", fieldType: "text", placeholder: "City", hidden: false},
+    { label: "State", id: "state", fieldType: "state", placeholder: "State", hidden: false},
+    { label: "Zip Code", id: "zip-code", fieldType: "zip", placeholder: "xxxxx-xxxx", hidden: false},
+    { label: "Country", id: "country", fieldType: "country", placeholder: "Country", hidden: false},
 ];
 
 const us_states = {
@@ -71,14 +74,24 @@ formFields.forEach((field) => {
     const label = document.createElement("label");
     label.textContent = field.label;
     label.htmlFor = field.id;
+    if (field.hidden) {
+        label.classList.add("hidden");
+    }
     // input
     const input = document.createElement("input");
-    input.type = field.type;
+    input.type = field.fieldType;
+    input.fieldType = field.fieldType;
     input.id = field.id;
     input.dataset.field = field.id;
     input.placeholder = field.placeholder;
+    if (field.hidden) {
+        input.classList.add("hidden");
+    }
     // lineBreak
     const lineBreak = document.createElement("br");
+    if (field.hidden) {
+        lineBreak.classList.add("hidden");
+    }
     // generate form
     if (formContainer) {
         formContainer.appendChild(label);
@@ -99,12 +112,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load the last entered values from storage and populate the input fields
     browser.storage.local.get(null, function(result) {
+        var counter = 0;
         for (var i = 0; i < inputs.length; i++) {
+            console.log(inputs[i])
             var field = inputs[i].dataset.field;
             if (result[field]) {
-                inputs[i].value = result[field];
+                counter++;
+                inputs[i].value = autoFormat(inputs[i].fieldType, result[field].value);
             }
         }
+        if (counter === 0) {
+            applicateButton.classList.add('invalidButton')
+        } else {
+            applicateButton.classList.remove('invalidButton')
+        }    
     });
 
     console.log(inputs)
@@ -114,19 +135,19 @@ document.addEventListener('DOMContentLoaded', function() {
         inputs[i].addEventListener('input', function(event) {
             var field = event.target.dataset.field;
             var value = event.target.value;
-            var fieldType = formFields.find((field) => field.id === event.target.id)?.type;
+            var fieldType = event.target.fieldType;
             var invalidFound = false
             // Store the last entered value in storage
-            if (validateField(fieldType, value) || value === null || value === "") {
+            if (value === null || value === "" || value === undefined ||validateField(fieldType, value)) {
                 var data = {};
-                data[field] = value;
+                data[field] = {"value": value, "fieldType": fieldType};
                 browser.storage.local.set(data);
                 event.target.classList.remove('invalid');
             } else {
                 invalidFound = true
                 event.target.classList.add('invalid')
             }
-            if (invalidFound) {
+            if (invalidFound || allFieldsEmpty(inputs)) {
                 validInputs = false
                 applicateButton.classList.add('invalidButton')
             } else {
@@ -148,15 +169,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     applicateButton.addEventListener('click', function() {
         // Load the last entered values from storage and populate the input fields
-        if (validInputs) {
+        if (validInputs && !allFieldsEmpty(inputs)) {
+            console.log("applicating:", inputs);
             browser.storage.local.get(null, function(result) {
                 for (var i = 0; i < inputs.length; i++) {
                     var field = inputs[i].dataset.field;
-                    var value = result[field];
-                    // Populate the value onto the page if it is not empty
-                    if (value) {
-                        applicate(field, value);
-                    }
+                    if (result[field]) {
+                        var value = result[field].value;
+                        // Populate the value onto the page if it is not empty
+                        if (value) {
+                            applicate(field, value);
+                        }
+                    } 
                 }
             });
         }
@@ -164,20 +188,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+function allFieldsEmpty(inputs) {
+    return Array.from(inputs).every(function(input) {
+        return input.value === "" || input.value === null || input.value === undefined;
+    });
+}
+
 function validateField(type, value) {
     switch (type) {
         case "email":
             return /^[^\s]+@[^\s]+\.[^\s]+$/.test(value);
         case "tel":
-            return /(^((\d{3})-|(\(\d{3}\) ?))\d{3}-\d{4}$)|(^\d{10}$)/.test(value);
+            return /(^(\d{1,2}-)?((\d{3})-|(\(\d{3}\) ?))\d{3}-\d{4}$)|(^\d{10}$)/.test(value);
         case "state":
             return value.toLowerCase() in us_states ? true : false;
-        case "zip-code":
+        case "zip":
             return /^\d{5}(-\d{4})*$/.test(value);
         case "country":
             return /^united states( of america)*$/.test(value.toLowerCase());
         default:
             return true;
+    }
+}
+
+function autoFormat(type, value) {
+    switch (type) {
+        case "tel":
+            value = value.replace(/\D/g, '').substring(0, 13);
+            length = value.length;
+            if (length > 10 && length <= 13) {
+                return value.substring(0, length - 10) + '-' + value.substring(length - 10, length - 7) + '-' + value.substring(length - 7, length - 4) + '-' + value.substring(length - 4, length);
+            } else if (length > 6) {
+                return value.substring(0, 3) + '-' + value.substring(3, 6) + '-' + value.substring(6, 10);
+            } else if (length > 3) {
+                return value.substring(0, 3) + '-' + value.substring(3, 6);
+            } else {
+                return value;
+            }
+        case "zip":
+            return value;
+        default:
+            return value;
     }
 }
 
