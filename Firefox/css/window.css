@@ -20,16 +20,15 @@ body {
     background: var(--glow);
   }
 
-.hidden {
-    display: none;
-}
 
 input {
     transition: 0.25s;
     padding: 0.25em;
     text-align: center;
     justify-content: center;
-    border: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
     border-radius: 4px;
     color: var(--text);
     background-color: var(--off-background);
@@ -54,7 +53,9 @@ label {
 
 button {
     transition: 0.25s;
-    border: none;
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
     padding: none;
     text-align: center;
     cursor: pointer;
@@ -69,7 +70,7 @@ button:hover, button:focus, button:active {
     background-color: var(--highlight-background);
 }
 
-.container {
+.buttonContainer {
     position: relative;
     height: 100px;
     width: auto;
@@ -131,3 +132,22 @@ button:hover, button:focus, button:active {
     align-items: center;
     width: auto;
 }
+
+.invalid {
+    border-width: 1px !important;
+    border-style: solid;
+    border-color: red;
+}
+
+.invalidButton, .invalidButton:hover, .invalidButton:active, .invalidButton:focus{
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    color: var(--off-text) !important;
+    background-color: var(--off-background) !important;
+}
+
+.hidden {
+    display: none !important;
+}
+

@@ -1,12 +1,12 @@
 
 const formContainer = document.getElementById("form-container");
 
-var formFields = [
+const formFields = [
     { label: "First Name", id: "first-name", type: "text", placeholder: "First Name", formatted: false, abbrev: false},
     { label: "Last Name", id: "last-name", type: "text", placeholder: "Last Name", formatted: false, abbrev: false},
     { label: "Email", id: "email", type: "email", placeholder: "text@website.ext", formatted: false, abbrev: false},
     { label: "Phone Number", id: "phone-number", type: "tel", placeholder: "xxx-xxx-xxxx", formatted: true, abbrev: false},
-    { label: "Address", id: "address", type: "text", placeholder: "xxx Street Name", formatted: false, abbrev: false},
+    { label: "Address", id: "address", type: "text", placeholder: "Street Address", formatted: false, abbrev: false},
     { label: "City", id: "city", type: "text", placeholder: "City", formatted: false, abbrev: false},
     { label: "State", id: "state", type: "state", placeholder: "State", formatted: false, abbrev: true},
     { label: "Zip Code", id: "zip-code", type: "zip", placeholder: "xxxxx-xxxx", formatted: true, abbrev: false},
@@ -87,6 +87,8 @@ formFields.forEach((field) => {
     }
 });
 
+var validInputs = true
+
 console.log("Applicator extension loaded");
 
 // Define the interface
@@ -113,12 +115,24 @@ document.addEventListener('DOMContentLoaded', function() {
             var field = event.target.dataset.field;
             var value = event.target.value;
             var fieldType = formFields.find((field) => field.id === event.target.id)?.type;
+            var invalidFound = false
             // Store the last entered value in storage
             if (validateField(fieldType, value) || value === null || value === "") {
                 var data = {};
                 data[field] = value;
                 browser.storage.local.set(data);
-            } 
+                event.target.classList.remove('invalid');
+            } else {
+                invalidFound = true
+                event.target.classList.add('invalid')
+            }
+            if (invalidFound) {
+                validInputs = false
+                applicateButton.classList.add('invalidButton')
+            } else {
+                validInputs = true
+                applicateButton.classList.remove('invalidButton')
+            }
         });
     }
 
@@ -134,16 +148,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     applicateButton.addEventListener('click', function() {
         // Load the last entered values from storage and populate the input fields
-        browser.storage.local.get(null, function(result) {
-            for (var i = 0; i < inputs.length; i++) {
-                var field = inputs[i].dataset.field;
-                var value = result[field];
-                // Populate the value onto the page if it is not empty
-                if (value) {
-                    applicate(field, value);
+        if (validInputs) {
+            browser.storage.local.get(null, function(result) {
+                for (var i = 0; i < inputs.length; i++) {
+                    var field = inputs[i].dataset.field;
+                    var value = result[field];
+                    // Populate the value onto the page if it is not empty
+                    if (value) {
+                        applicate(field, value);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
 });
