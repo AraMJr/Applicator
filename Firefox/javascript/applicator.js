@@ -122,10 +122,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         if (counter === 0) {
-            applicateButton.classList.add('invalidButton')
+            applicateButton.classList.add('invalidButton');
         } else {
-            applicateButton.classList.remove('invalidButton')
-        }    
+            applicateButton.classList.remove('invalidButton');
+        }
     });
 
     console.log(inputs)
@@ -165,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].value = "";
         }
+        applicateButton.classList.add('invalidButton');
     });
 
     applicateButton.addEventListener('click', function() {
@@ -233,7 +234,54 @@ function autoFormat(type, value) {
 }
 
 function applicate(field, value) {
-    console.log(field + ": " + value);
+    console.log("applicating:", field, value);
+    switch (field.toLowerCase()) {
+        case "email":
+            var email = document.getElementById("email");
+            email.value = value;
+            email.dispatchEvent(new Event('input'));
+            break;
+        case "phone-number":
+            var phone = document.getElementById("phone");
+            phone.value = value;
+            phone.dispatchEvent(new Event('input'));
+            break;
+        case "address":
+            var address = document.getElementById("address");
+            address.value = value;
+            address.dispatchEvent(new Event('input'));
+            break;
+        case "city":
+            var city = document.getElementById("city");
+            city.value = value;
+            city.dispatchEvent(new Event('input'));
+            break;
+        case "state":
+            var state = document.getElementById("state");
+            state.value = value;
+            state.dispatchEvent(new Event('input'));
+            break;
+        case "zip-code":
+            var zip = document.getElementById("zip");
+            zip.value = value;
+            zip.dispatchEvent(new Event('input'));
+            break;
+        case "country":
+            var country = document.getElementById("country");
+            country.value = value;
+            country.dispatchEvent(new Event('input'));
+            break;
+        case "full-name":
+            var name = document.getElementById("name");
+            name.value = value;
+            name.dispatchEvent(new Event('input'));
+            break;
+        case "date-of-birth":
+            var dob = document.getElementById("dob");
+            dob.value = value;
+            dob.dispatchEvent(new Event('input'));
+            break;
+        default:
+            console.log("Unknown field:", field);
+    }
 }
-
-
